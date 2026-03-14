@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الأخبار والإعلانات — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.layout{display:grid;grid-template-columns:1fr 280px;gap:20px;padding:20px 24px 32px}
+.featured{background:#fff;border:0.5px solid var(--c-border);border-radius:16px;overflow:hidden;margin:16px 24px 0}
+.feat-body{background:linear-gradient(135deg,#0f2d6b,#1a4fa0);padding:24px;color:#fff;position:relative;overflow:hidden}
+.feat-body::before{content:'';position:absolute;bottom:-30px;left:30px;width:180px;height:180px;background:rgba(255,255,255,0.04);border-radius:50%}
+.pinned{background:var(--c-accent);color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.feat-body h2{font-size:17px;font-weight:700;line-height:1.6;margin-bottom:8px;position:relative}
+.feat-body p{font-size:13px;color:rgba(255,255,255,.82);line-height:1.75;position:relative}
+.feat-meta{display:flex;gap:12px;margin-top:12px;font-size:12px;color:rgba(255,255,255,.65);flex-wrap:wrap;position:relative}
+.feat-footer{padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.news-list{display:flex;flex-direction:column;gap:1px;background:var(--c-border);border-radius:14px;overflow:hidden}
+.news-row{background:#fff;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:background .12s}
+.news-row:hover{background:#f7fafd}
+.news-row:first-child{border-radius:14px 14px 0 0}
+.news-row:last-child{border-radius:0 0 14px 14px}
+.nr-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.nr-body{flex:1}
+.nr-body h4{font-size:13px;font-weight:500;line-height:1.5;margin-bottom:6px}
+.nr-body p{font-size:12px;color:var(--c-muted);line-height:1.6;margin-bottom:6px}
+.nr-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nr-meta{font-size:11px;color:var(--c-muted)}
+.nr-views{font-size:11px;color:var(--c-muted);margin-right:auto}
+.sidebar-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:16px;margin-bottom:14px}
+.sc-title{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sc-title::before{content:'';width:3px;height:14px;background:var(--c-primary);border-radius:3px;display:inline-block}
+.cat-item{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background .12s;font-size:12px}
+.cat-item:hover{background:var(--c-light)}
+.cat-count{background:var(--c-light);color:var(--c-muted);font-size:11px;padding:2px 8px;border-radius:20px}
+.pop-item{display:flex;gap:10px;align-items:flex-start;padding:8px;border-radius:9px;cursor:pointer;transition:background .12s}
+.pop-item:hover{background:var(--c-light)}
+.pop-num{font-size:16px;font-weight:700;color:var(--c-accent);width:22px;flex-shrink:0;line-height:1}
+.pop-title{font-size:12px;line-height:1.5}
+.pop-views{font-size:11px;color:var(--c-muted);margin-top:2px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="news.html" class="active">الأخبار</a>
+    <a href="events.html">الفعاليات</a>
+    <a href="files.html">الملفات</a>
+    <a href="vote.html">التصويتات</a>
+    <a href="competitions.html">المسابقات</a>
+    <a href="contact.html">تواصل معنا</a>
+  </div>
+  <div class="nav-actions"><button class="btn-login" onclick="location.href='register.html'">تسجيل / دخول</button></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>الأخبار والإعلانات</span></div>
+  <h1>📰 الأخبار والإعلانات</h1>
+  <p>تابع آخر أخبار الجامعة والهيئة الطلابية وإعلانات الكليات</p>
+</div>
+
+<div class="toolbar">
+  <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="ابحث في الأخبار..." oninput="filterNews()"/></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap" id="filterGroup">
+    <button class="filter-btn active" onclick="setFilter(this,'all')">الكل</button>
+    <button class="filter-btn" onclick="setFilter(this,'هيئة')">إعلانات الهيئة</button>
+    <button class="filter-btn" onclick="setFilter(this,'جامعة')">أخبار الجامعة</button>
+    <button class="filter-btn" onclick="setFilter(this,'علوم')">كلية العلوم</button>
+    <button class="filter-btn" onclick="setFilter(this,'هندسة')">كلية الهندسة</button>
+    <button class="filter-btn" onclick="setFilter(this,'آداب')">كلية الآداب</button>
+    <button class="filter-btn" onclick="setFilter(this,'طب')">كلية الطب</button>
+  </div>
+</div>
+
+<div class="featured">
+  <div class="feat-body">
+    <span class="pinned">📌 مثبّت · خبر رئيسي</span>
+    <h2>انطلاق برنامج المنح الدراسية للطلاب المتميزين — العام الدراسي 2024/2025</h2>
+    <p>تُعلن الهيئة الطلابية بالتعاون مع إدارة الجامعة عن فتح باب التقديم للمنح الدراسية الكاملة وتوفير الدعم المالي للطلاب المستحقين من جميع الكليات. يُشترط للتقديم الحصول على معدل لا يقل عن 80% وعدم تجاوز الساعات الرسوبية.</p>
+    <div class="feat-meta"><span>✍️ الهيئة الطلابية</span><span>·</span><span>🕐 منذ 3 ساعات</span><span>·</span><span>👁 248 مشاهدة</span><span>·</span><span>📅 الموعد النهائي: 31 مارس 2025</span></div>
+  </div>
+  <div class="feat-footer">
+    <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="tag tag-blue">منح دراسية</span><span class="tag tag-green">جميع الكليات</span><span class="tag tag-amber">الموعد: 31 مارس</span></div>
+    <a href="#" style="font-size:12px;color:var(--c-primary);font-weight:600;text-decoration:none">اقرأ المزيد ←</a>
+  </div>
+</div>
+
+<div class="layout">
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:14px;font-weight:700;color:var(--c-primary)">أحدث الأخبار</span>
+      <span style="font-size:11px;color:var(--c-muted)">إجمالي 24 خبر هذا الشهر</span>
+    </div>
+    <div class="news-list" id="newsList">
+      <div class="news-row" data-cat="علوم"><div class="nr-icon" style="background:#E6F1FB">📌</div><div class="nr-body"><h4>بدء التسجيل في مسابقة البحث العلمي السنوية الثامنة</h4><p>تدعو كلية العلوم الطلابَ للمشاركة في المسابقة السنوية للبحث العلمي، حيث ستُقدَّم جوائز قيمة لأفضل الأبحاث المقدمة.</p><div class="nr-footer"><span class="nr-meta">كلية العلوم · منذ ساعتين</span><span class="tag tag-green">جديد</span><span class="nr-views">👁 120 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="هيئة"><div class="nr-icon" style="background:#EAF3DE">🏆</div><div class="nr-body"><h4>نتائج انتخابات ممثلي الكليات للعام الدراسي الجديد</h4><p>أعلنت الهيئة الطلابية عن النتائج الرسمية لانتخابات ممثلي الطلاب في الكليات المختلفة، وسيتولى الفائزون مهامهم مطلع الشهر القادم.</p><div class="nr-footer"><span class="nr-meta">الهيئة الطلابية · أمس</span><span class="tag tag-blue">رسمي</span><span class="nr-views">👁 310 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="جامعة"><div class="nr-icon" style="background:#FAEEDA">⚠️</div><div class="nr-body"><h4>تغيير في جدول الامتحانات النهائية للفصل الثاني — يرجى المراجعة</h4><p>أعلنت عمادة شؤون الطلاب عن تعديلات في جدول الامتحانات النهائية لعدد من الكليات. يُرجى مراجعة الجدول المحدّث على البوابة الإلكترونية.</p><div class="nr-footer"><span class="nr-meta">شؤون الطلاب · منذ 3 أيام</span><span class="tag tag-amber">تنبيه</span><span class="nr-views">👁 540 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="جامعة"><div class="nr-icon" style="background:#E1F5EE">🎓</div><div class="nr-body"><h4>الإعلان عن موعد حفل تكريم الطلاب المتفوقين في الفصل الأول</h4><p>ستُقيم الجامعة حفلاً رسمياً لتكريم الطلاب المتفوقين الذين حافظوا على معدل تراكمي ممتاز. الدعوات ستُرسل لذوي الطلاب.</p><div class="nr-footer"><span class="nr-meta">إدارة الجامعة · منذ 5 أيام</span><span class="nr-views">👁 200 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="هيئة"><div class="nr-icon" style="background:#FBEAF0">📋</div><div class="nr-body"><h4>تحديث اللوائح الطلابية الخاصة بالحضور والغياب</h4><p>أصدرت إدارة الجامعة تحديثاً جديداً للوائح الحضور، يُلزم الطلاب بنسبة حضور لا تقل عن 75% لاستحقاق دخول الاختبار النهائي.</p><div class="nr-footer"><span class="nr-meta">شؤون الطلاب · منذ أسبوع</span><span class="tag tag-blue">لوائح</span><span class="nr-views">👁 180 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="هندسة"><div class="nr-icon" style="background:#EEEDFE">🔬</div><div class="nr-body"><h4>افتتاح المختبر الجديد للذكاء الاصطناعي في كلية الهندسة</h4><p>أعلنت كلية الهندسة عن افتتاح مختبر متطور للذكاء الاصطناعي وتعلم الآلة، مزوّد بأحدث الأجهزة والبرمجيات.</p><div class="nr-footer"><span class="nr-meta">كلية الهندسة · منذ أسبوعين</span><span class="tag tag-purple">افتتاح</span><span class="nr-views">👁 95 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="طب"><div class="nr-icon" style="background:#FCEBEB">🏥</div><div class="nr-body"><h4>حملة التبرع بالدم المنظمة من قِبل كلية الطب وهيئة الطلاب</h4><p>تنظم كلية الطب بالتعاون مع الهيئة الطلابية حملة للتبرع بالدم. جميع الطلاب والمنتسبين مدعوون للمشاركة في هذا العمل الإنساني.</p><div class="nr-footer"><span class="nr-meta">كلية الطب · منذ أسبوعين</span><span class="tag tag-red">إنساني</span><span class="nr-views">👁 75 مشاهدة</span></div></div></div>
+      <div class="news-row" data-cat="آداب"><div class="nr-icon" style="background:#E1F5EE">📖</div><div class="nr-body"><h4>إطلاق مبادرة نادي القراءة الطلابي للفصل الثاني</h4><p>تُطلق كلية الآداب مبادرة نادي القراءة الطلابي لهذا الفصل، بهدف تعزيز ثقافة القراءة وتبادل الأفكار بين الطلاب من مختلف التخصصات.</p><div class="nr-footer"><span class="nr-meta">كلية الآداب · منذ 3 أسابيع</span><span class="tag tag-green">مبادرة</span><span class="nr-views">👁 60 مشاهدة</span></div></div></div>
+    </div>
+    <div class="pagination">
+      <div class="pg active" onclick="setPage(this)">1</div>
+      <div class="pg" onclick="setPage(this)">2</div>
+      <div class="pg" onclick="setPage(this)">3</div>
+      <div class="pg">···</div>
+      <div class="pg" onclick="setPage(this)">8</div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sc-title">التصنيفات</div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'هيئة\']').click()"><span>إعلانات الهيئة</span><span class="cat-count">12</span></div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'جامعة\']').click()"><span>أخبار الجامعة</span><span class="cat-count">8</span></div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'علوم\']').click()"><span>كلية العلوم</span><span class="cat-count">5</span></div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'هندسة\']').click()"><span>كلية الهندسة</span><span class="cat-count">4</span></div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'آداب\']').click()"><span>كلية الآداب</span><span class="cat-count">3</span></div>
+      <div class="cat-item" onclick="document.querySelector('[onclick*=\'طب\']').click()"><span>كلية الطب</span><span class="cat-count">3</span></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sc-title">الأكثر قراءة</div>
+      <div class="pop-item"><div class="pop-num">1</div><div><div class="pop-title">تغيير في جدول الامتحانات النهائية</div><div class="pop-views">👁 540 مشاهدة</div></div></div>
+      <div class="pop-item"><div class="pop-num">2</div><div><div class="pop-title">نتائج انتخابات ممثلي الكليات</div><div class="pop-views">👁 310 مشاهدة</div></div></div>
+      <div class="pop-item"><div class="pop-num">3</div><div><div class="pop-title">برنامج المنح الدراسية للمتميزين</div><div class="pop-views">👁 248 مشاهدة</div></div></div>
+      <div class="pop-item"><div class="pop-num">4</div><div><div class="pop-title">حفل تكريم الطلاب المتفوقين</div><div class="pop-views">👁 200 مشاهدة</div></div></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sc-title">اشترك في النشرة</div>
+      <p style="font-size:12px;color:var(--c-muted);margin-bottom:10px;line-height:1.6">اشترك لتصلك آخر الأخبار على بريدك الإلكتروني</p>
+      <div class="form-group"><input type="email" placeholder="بريدك الإلكتروني"/></div>
+      <button class="btn-primary" style="width:100%" onclick="showToast('تم الاشتراك بنجاح! 🎉','success')">اشتراك</button>
+    </div>
+  </aside>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><a href="#">أعضاء الهيئة</a><div class="social-links"><a class="social-btn">𝕏</a><a class="social-btn">f</a><a class="social-btn">tg</a></div></div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="index.html">الرئيسية</a><a href="events.html">الفعاليات</a><a href="files.html">الملفات</a><a href="register.html">تسجيل الطلاب</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية</span><span>تم التطوير بواسطة فريق التقنية</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup"><div class="chat-popup-title">💬 المساعد الذكي</div><div class="chat-popup-sub">متاح 24/7</div><div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك؟ 😊</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="اكتب سؤالك..."/><button class="chat-send" onclick="sendChat()">إرسال</button></div></div>
+  <div class="chat-fab" onclick="toggleChat()"><div class="chat-fab-inner">AI</div></div>
+</div>
+<script src="shared.js"></script>
+<script>
+var activeFilter='all';
+function setFilter(btn,cat){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');activeFilter=cat;filterNews();}
+function filterNews(){var q=document.getElementById('searchInput').value.trim().toLowerCase();document.querySelectorAll('#newsList .news-row').forEach(function(r){var cat=r.getAttribute('data-cat')||'';var txt=r.innerText.toLowerCase();r.style.display=((activeFilter==='all'||cat.includes(activeFilter))&&(q===''||txt.includes(q)))?'flex':'none';});}
+function setPage(el){document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('active')});el.classList.add('active');}
+</script>
+</body>
+</html>

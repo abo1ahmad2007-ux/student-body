@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>التصويتات والاستطلاعات — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.polls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.poll-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:20px}
+.poll-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:10px}
+.poll-title{font-size:14px;font-weight:700;line-height:1.5;flex:1}
+.poll-status{font-size:10px;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.status-open{background:#E1F5EE;color:#0F6E56}
+.status-closed{background:#F1EFE8;color:#5F5E5A}
+.status-upcoming{background:#FAEEDA;color:#854F0B}
+.poll-meta{font-size:11px;color:var(--c-muted);margin-bottom:14px;display:flex;gap:12px;flex-wrap:wrap}
+.poll-options{display:flex;flex-direction:column;gap:10px}
+.poll-opt{cursor:pointer}
+.poll-opt-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:13px}
+.poll-opt-pct{font-size:12px;font-weight:600;color:var(--c-primary)}
+.poll-bar{height:8px;background:#f0f2f8;border-radius:10px;overflow:hidden}
+.poll-fill{height:100%;border-radius:10px;background:var(--c-primary);transition:width .6s ease}
+.poll-fill.voted{background:var(--c-green)}
+.poll-footer{margin-top:14px;padding-top:12px;border-top:0.5px solid var(--c-border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--c-muted)}
+.vote-btn{background:var(--c-primary);color:#fff;border:none;border-radius:8px;padding:7px 18px;font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .15s}
+.vote-btn:hover{opacity:.85}
+.vote-btn:disabled{opacity:.5;cursor:not-allowed}
+.vote-radio{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.vote-option{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0.5px solid var(--c-border);border-radius:9px;cursor:pointer;transition:all .15s;font-size:13px}
+.vote-option:hover,.vote-option.selected{border-color:var(--c-primary);background:#E6F1FB}
+.vote-option input{accent-color:var(--c-primary)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a>
+    <a href="files.html">الملفات</a>
+    <a href="vote.html" class="active">التصويتات</a>
+    <a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a>
+  </div>
+  <div class="nav-actions"><button class="btn-login" onclick="location.href='register.html'">تسجيل / دخول</button></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>التصويتات والاستطلاعات</span></div>
+  <h1>📊 التصويتات والاستطلاعات</h1>
+  <p>شارك في صنع القرار وأعطِ رأيك في القضايا الطلابية</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">استطلاع نشط</div></div>
+  <div class="stat"><div class="stat-num">1,048</div><div class="stat-lbl">إجمالي الأصوات</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">استطلاع مكتمل</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-lbl">قادم قريباً</div></div>
+</div>
+
+<section class="section">
+  <div class="section-header"><div class="section-title">الاستطلاعات النشطة</div></div>
+  <div class="polls-grid">
+
+    <!-- Poll 1 — votable -->
+    <div class="poll-card">
+      <div class="poll-header">
+        <div class="poll-title">ما هو الوقت المناسب لإقامة الفعاليات الطلابية؟</div>
+        <span class="poll-status status-open">● نشط</span>
+      </div>
+      <div class="poll-meta"><span>👁 320 مشاركة</span><span>⏰ ينتهي بعد 3 أيام</span></div>
+      <div class="vote-radio" id="voteOptions1">
+        <label class="vote-option" onclick="selectOpt(this,'poll1')"><input type="radio" name="poll1" value="صباح"/> صباحاً (8 ص – 12 م)</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll1')"><input type="radio" name="poll1" value="ظهر"/> ظهراً (12 م – 4 م)</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll1')"><input type="radio" name="poll1" value="مساء"/> مساءً (4 م – 8 م)</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll1')"><input type="radio" name="poll1" value="عطلة"/> أيام العطلة</label>
+      </div>
+      <button class="vote-btn" id="voteBtn1" onclick="castVote('poll1','voteBtn1','results1')">أدلِ بصوتك</button>
+      <div class="poll-footer"><span>الهيئة الطلابية</span><span>320 صوت</span></div>
+      <div id="results1" style="display:none;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--c-border)">
+        <div class="poll-options">
+          <div class="poll-opt"><div class="poll-opt-label"><span>صباحاً</span><span class="poll-opt-pct">28%</span></div><div class="poll-bar"><div class="poll-fill" style="width:28%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>ظهراً</span><span class="poll-opt-pct">18%</span></div><div class="poll-bar"><div class="poll-fill" style="width:18%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>مساءً</span><span class="poll-opt-pct voted">42%</span></div><div class="poll-bar"><div class="poll-fill voted" style="width:42%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>أيام العطلة</span><span class="poll-opt-pct">12%</span></div><div class="poll-bar"><div class="poll-fill" style="width:12%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Poll 2 -->
+    <div class="poll-card">
+      <div class="poll-header">
+        <div class="poll-title">كيف تقيّم خدمات الهيئة الطلابية هذا الفصل؟</div>
+        <span class="poll-status status-open">● نشط</span>
+      </div>
+      <div class="poll-meta"><span>👁 512 مشاركة</span><span>⏰ ينتهي بعد 7 أيام</span></div>
+      <div class="vote-radio" id="voteOptions2">
+        <label class="vote-option" onclick="selectOpt(this,'poll2')"><input type="radio" name="poll2"/> ممتاز ⭐⭐⭐⭐⭐</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll2')"><input type="radio" name="poll2"/> جيد جداً ⭐⭐⭐⭐</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll2')"><input type="radio" name="poll2"/> جيد ⭐⭐⭐</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll2')"><input type="radio" name="poll2"/> يحتاج تحسين ⭐⭐</label>
+      </div>
+      <button class="vote-btn" id="voteBtn2" onclick="castVote('poll2','voteBtn2','results2')">أدلِ بصوتك</button>
+      <div class="poll-footer"><span>استطلاع الجودة السنوي</span><span>512 صوت</span></div>
+      <div id="results2" style="display:none;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--c-border)">
+        <div class="poll-options">
+          <div class="poll-opt"><div class="poll-opt-label"><span>ممتاز</span><span class="poll-opt-pct voted">45%</span></div><div class="poll-bar"><div class="poll-fill voted" style="width:45%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>جيد جداً</span><span class="poll-opt-pct">32%</span></div><div class="poll-bar"><div class="poll-fill" style="width:32%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>جيد</span><span class="poll-opt-pct">15%</span></div><div class="poll-bar"><div class="poll-fill" style="width:15%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>يحتاج تحسين</span><span class="poll-opt-pct">8%</span></div><div class="poll-bar"><div class="poll-fill" style="width:8%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Poll 3 -->
+    <div class="poll-card">
+      <div class="poll-header">
+        <div class="poll-title">ما المسابقة التي تودّ المشاركة فيها قريباً؟</div>
+        <span class="poll-status status-open">● نشط</span>
+      </div>
+      <div class="poll-meta"><span>👁 216 مشاركة</span><span>⏰ ينتهي بعد 5 أيام</span></div>
+      <div class="vote-radio" id="voteOptions3">
+        <label class="vote-option" onclick="selectOpt(this,'poll3')"><input type="radio" name="poll3"/> مسابقة البرمجة 💻</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll3')"><input type="radio" name="poll3"/> مسابقة الخطابة 🎤</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll3')"><input type="radio" name="poll3"/> مسابقة الابتكار 💡</label>
+        <label class="vote-option" onclick="selectOpt(this,'poll3')"><input type="radio" name="poll3"/> الأولمبياد الرياضي 🏅</label>
+      </div>
+      <button class="vote-btn" id="voteBtn3" onclick="castVote('poll3','voteBtn3','results3')">أدلِ بصوتك</button>
+      <div class="poll-footer"><span>الهيئة الطلابية</span><span>216 صوت</span></div>
+      <div id="results3" style="display:none;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--c-border)">
+        <div class="poll-options">
+          <div class="poll-opt"><div class="poll-opt-label"><span>مسابقة البرمجة</span><span class="poll-opt-pct voted">38%</span></div><div class="poll-bar"><div class="poll-fill voted" style="width:38%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>مسابقة الخطابة</span><span class="poll-opt-pct">22%</span></div><div class="poll-bar"><div class="poll-fill" style="width:22%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>مسابقة الابتكار</span><span class="poll-opt-pct">28%</span></div><div class="poll-bar"><div class="poll-fill" style="width:28%"></div></div></div>
+          <div class="poll-opt"><div class="poll-opt-label"><span>الأولمبياد الرياضي</span><span class="poll-opt-pct">12%</span></div><div class="poll-bar"><div class="poll-fill" style="width:12%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Poll 4 — Closed -->
+    <div class="poll-card" style="opacity:.75">
+      <div class="poll-header">
+        <div class="poll-title">ما هو يوم الدوام المفضل لديك للأنشطة؟ (مكتمل)</div>
+        <span class="poll-status status-closed">✓ مكتمل</span>
+      </div>
+      <div class="poll-meta"><span>👁 680 مشاركة</span><span>✅ انتهى</span></div>
+      <div class="poll-options">
+        <div class="poll-opt"><div class="poll-opt-label"><span>الأحد</span><span class="poll-opt-pct">15%</span></div><div class="poll-bar"><div class="poll-fill" style="width:15%"></div></div></div>
+        <div class="poll-opt"><div class="poll-opt-label"><span>الثلاثاء</span><span class="poll-opt-pct">20%</span></div><div class="poll-bar"><div class="poll-fill" style="width:20%"></div></div></div>
+        <div class="poll-opt"><div class="poll-opt-label"><span>الأربعاء</span><span class="poll-opt-pct voted">48%</span></div><div class="poll-bar"><div class="poll-fill voted" style="width:48%"></div></div></div>
+        <div class="poll-opt"><div class="poll-opt-label"><span>الخميس</span><span class="poll-opt-pct">17%</span></div><div class="poll-bar"><div class="poll-fill" style="width:17%"></div></div></div>
+      </div>
+      <div class="poll-footer"><span>الهيئة الطلابية</span><span>680 صوت · 🏆 الأربعاء فائز</span></div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><div class="social-links"><a class="social-btn">𝕏</a><a class="social-btn">f</a><a class="social-btn">tg</a></div></div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="files.html">الملفات</a><a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup"><div class="chat-popup-title">💬 المساعد الذكي</div><div class="chat-popup-sub">متاح 24/7</div><div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك؟</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="اكتب سؤالك..."/><button class="chat-send" onclick="sendChat()">إرسال</button></div></div>
+  <div class="chat-fab" onclick="toggleChat()"><div class="chat-fab-inner">AI</div></div>
+</div>
+<script src="shared.js"></script>
+<script>
+function selectOpt(el,name){document.querySelectorAll('[name="'+name+'"]').forEach(function(r){r.closest('.vote-option').classList.remove('selected')});el.classList.add('selected');}
+function castVote(name,btnId,resultsId){var sel=document.querySelector('[name="'+name+'"]:checked');if(!sel){showToast('يرجى اختيار إجابة أولاً','success');return;}document.getElementById(btnId).disabled=true;document.getElementById(btnId).textContent='✓ تم التصويت';document.querySelectorAll('[name="'+name+'"]').forEach(function(r){r.closest('.vote-option').style.pointerEvents='none'});document.getElementById(resultsId).style.display='block';showToast('تم تسجيل صوتك بنجاح! +10 نقاط 🎉','success');}
+</script>
+</body>
+</html>

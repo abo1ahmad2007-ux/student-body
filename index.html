@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الرئيسية — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.hero{background:linear-gradient(135deg,#0f2d6b 0%,#1a4fa0 60%,#1D6FA0 100%);padding:52px 32px;color:#fff;position:relative;overflow:hidden}
+.hero-c1{position:absolute;top:-40px;left:-40px;width:260px;height:260px;background:rgba(255,255,255,0.04);border-radius:50%}
+.hero-c2{position:absolute;bottom:-60px;right:80px;width:200px;height:200px;background:rgba(232,160,32,0.1);border-radius:50%}
+.hero-c3{position:absolute;top:20px;right:20px;width:110px;height:110px;background:rgba(255,255,255,0.03);border-radius:50%}
+.hero-inner{position:relative;max-width:680px}
+.hero h1{font-size:28px;font-weight:700;margin-bottom:10px;line-height:1.4}
+.hero p{font-size:14px;color:rgba(255,255,255,0.82);line-height:1.75;max-width:500px}
+.hero-badges{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;padding:5px 14px;border-radius:20px}
+.badge.gold{background:var(--c-accent);border-color:var(--c-accent)}
+.hero-btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn-white{background:#fff;color:var(--c-primary);font-size:13px;font-family:'Cairo',sans-serif;font-weight:700;padding:11px 24px;border-radius:9px;border:none;cursor:pointer;transition:opacity .15s}
+.btn-white:hover{opacity:.9}
+.btn-hero-outline{background:transparent;color:#fff;font-size:13px;font-family:'Cairo',sans-serif;font-weight:500;padding:11px 24px;border-radius:9px;border:1.5px solid rgba(255,255,255,0.4);cursor:pointer;transition:background .15s}
+.btn-hero-outline:hover{background:rgba(255,255,255,0.1)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.ci-news{background:#E6F1FB}
+.ci-events{background:#EAF3DE}
+.ci-files{background:#FAEEDA}
+.ci-vote{background:#E1F5EE}
+.ci-suggest{background:#FBEAF0}
+.ci-comp{background:#EEEDFE}
+.ci-points{background:#FAECE7}
+.ci-ai{background:#E6F1FB}
+.ci-reg{background:#FCEBEB}
+.ci-contact{background:#F1EFE8}
+.news-list{display:flex;flex-direction:column;gap:10px}
+.news-item{background:#fff;border:0.5px solid var(--c-border);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:border-color .15s}
+.news-item:hover{border-color:rgba(26,79,160,.3)}
+.news-dot{width:9px;height:9px;border-radius:50%;background:var(--c-primary);margin-top:5px;flex-shrink:0}
+.news-content{flex:1}
+.news-content h4{font-size:13px;font-weight:500;line-height:1.5;margin-bottom:5px}
+.news-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.news-meta{font-size:11px;color:var(--c-muted)}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.event-card{background:#fff;border:0.5px solid var(--c-border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .15s}
+.event-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,79,160,.1)}
+.event-top{padding:12px 14px;color:#fff;display:flex;align-items:center;gap:10px}
+.event-date{border-radius:8px;width:36px;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;line-height:1.3;flex-shrink:0}
+.event-title{font-size:13px;font-weight:600}
+.event-place{font-size:11px;color:rgba(255,255,255,.75);margin-top:3px}
+.event-body{padding:12px 14px}
+.event-body p{font-size:12px;color:var(--c-muted);line-height:1.6}
+.event-reg{display:inline-block;margin-top:10px;color:#fff;font-size:12px;padding:6px 14px;border-radius:8px;cursor:pointer;border:none;font-family:'Cairo',sans-serif;transition:opacity .15s}
+.event-reg:hover{opacity:.85}
+.points-widget{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:20px}
+.points-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.points-total{font-size:28px;font-weight:700;color:var(--c-accent)}
+.points-lbl{font-size:12px;color:var(--c-muted);margin-top:2px}
+.points-level{background:#FAEEDA;color:#854F0B;font-size:11px;padding:4px 12px;border-radius:20px}
+.prog-bar{background:#f0f2f8;border-radius:20px;height:10px;overflow:hidden;margin-bottom:8px}
+.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--c-primary),#378ADD)}
+.prog-labels{font-size:11px;color:var(--c-muted);display:flex;justify-content:space-between}
+.ph-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid rgba(26,79,160,.06)}
+.ph-item:last-child{border-bottom:none}
+.ph-desc{font-size:12px;color:var(--c-muted)}
+.ph-pts{font-size:13px;font-weight:600;color:var(--c-green)}
+.suggest-form{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.contact-card{background:#fff;border:0.5px solid var(--c-border);border-radius:12px;padding:18px;text-align:center}
+.contact-icon{font-size:26px;margin-bottom:8px}
+.contact-card h4{font-size:13px;font-weight:600;margin-bottom:4px}
+.contact-card p{font-size:12px;color:var(--c-muted)}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}.hero{padding:32px 16px}.hero h1{font-size:22px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">الرئيسية</a>
+    <a href="news.html">الأخبار</a>
+    <a href="events.html">الفعاليات</a>
+    <a href="files.html">الملفات</a>
+    <a href="vote.html">التصويتات</a>
+    <a href="competitions.html">المسابقات</a>
+    <a href="contact.html">تواصل معنا</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-login" onclick="location.href='register.html'">تسجيل / دخول</button>
+    <button class="btn-login" style="background:rgba(232,160,32,.25);border-color:var(--c-accent)" onclick="location.href='admin.html'">⚙️ إدارة</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-c1"></div><div class="hero-c2"></div><div class="hero-c3"></div>
+  <div class="hero-inner">
+    <h1>مرحباً بك في موقع الهيئة الطلابية</h1>
+    <p>منصتك الرسمية لمتابعة الأخبار والفعاليات والملفات الدراسية وجميع خدمات الطلاب — في مكان واحد</p>
+    <div class="hero-badges">
+      <span class="badge gold">العام الدراسي 2024–2025</span>
+      <span class="badge">1,240 طالب مسجل</span>
+      <span class="badge">47 فعالية منجزة</span>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-white" onclick="location.href='register.html'">سجّل الآن</button>
+      <button class="btn-hero-outline" onclick="location.href='news.html'">آخر الأخبار</button>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">1,240</div><div class="stat-lbl">طالب مسجل</div></div>
+  <div class="stat"><div class="stat-num">38</div><div class="stat-lbl">ملف دراسي</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-lbl">فعاليات قادمة</div></div>
+  <div class="stat"><div class="stat-num">520</div><div class="stat-lbl">نقطة موزعة</div></div>
+</div>
+
+<!-- SECTIONS GRID -->
+<section class="section">
+  <div class="section-header"><div class="section-title">الأقسام الرئيسية</div></div>
+  <div class="cards-grid">
+    <a href="news.html" class="card"><div class="card-icon ci-news">📰</div><h3>الأخبار والإعلانات</h3><p>آخر أخبار الجامعة وإعلانات الهيئة</p></a>
+    <a href="events.html" class="card"><div class="card-icon ci-events">📅</div><h3>الفعاليات والأنشطة</h3><p>تصفح الفعاليات وسجل مشاركتك</p></a>
+    <a href="files.html" class="card"><div class="card-icon ci-files">📚</div><h3>الملفات الدراسية</h3><p>PDF، ملخصات، محاضرات، نماذج</p></a>
+    <a href="register.html" class="card"><div class="card-icon ci-reg">📝</div><h3>تسجيل الطلاب</h3><p>سجّل بياناتك وانضم للمجتمع</p></a>
+    <a href="vote.html" class="card"><div class="card-icon ci-vote">📊</div><h3>التصويتات والاستطلاعات</h3><p>استطلاعات الرأي ونتائجها</p></a>
+    <a href="#suggest" class="card"><div class="card-icon ci-suggest">💡</div><h3>الاقتراحات والشكاوى</h3><p>أرسل ملاحظاتك مباشرة للإدارة</p></a>
+    <a href="competitions.html" class="card"><div class="card-icon ci-comp">🎯</div><h3>الأنشطة والمسابقات</h3><p>إعلانات المسابقات والتسجيل</p></a>
+    <a href="#points" class="card"><div class="card-icon ci-points">🎁</div><h3>النقاط والمكافآت</h3><p>اكسب نقاطاً واستبدلها بجوائز</p></a>
+    <a href="contact.html" class="card"><div class="card-icon ci-contact">👥</div><h3>تواصل معنا</h3><p>أرقام التواصل والتواصل الاجتماعي</p></a>
+  </div>
+</section>
+
+<!-- LATEST NEWS -->
+<section class="section" style="padding-top:0">
+  <div class="section-header"><div class="section-title">آخر الأخبار</div><a href="news.html" class="section-link">عرض الكل ←</a></div>
+  <div class="news-list">
+    <div class="news-item"><div class="news-dot"></div><div class="news-content"><h4>بدء التسجيل في مسابقة البحث العلمي السنوية الثامنة</h4><div class="news-footer"><span class="news-meta">كلية العلوم · منذ ساعتين</span><span class="tag tag-green">جديد</span></div></div></div>
+    <div class="news-item"><div class="news-dot" style="background:#1D9E75"></div><div class="news-content"><h4>نتائج انتخابات ممثلي الكليات للعام الدراسي الجديد</h4><div class="news-footer"><span class="news-meta">الهيئة الطلابية · أمس</span><span class="tag tag-blue">رسمي</span></div></div></div>
+    <div class="news-item"><div class="news-dot" style="background:#e8a020"></div><div class="news-content"><h4>تغيير في جدول الامتحانات النهائية للفصل الثاني — يرجى المراجعة</h4><div class="news-footer"><span class="news-meta">شؤون الطلاب · منذ 3 أيام</span><span class="tag tag-amber">تنبيه</span></div></div></div>
+    <div class="news-item"><div class="news-dot"></div><div class="news-content"><h4>الإعلان عن موعد حفل تكريم الطلاب المتفوقين في الفصل الأول</h4><div class="news-footer"><span class="news-meta">إدارة الجامعة · منذ 5 أيام</span></div></div></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="section" style="padding-top:0" id="events">
+  <div class="section-header"><div class="section-title">الفعاليات القادمة</div><a href="events.html" class="section-link">عرض الكل ←</a></div>
+  <div class="events-grid">
+    <div class="event-card">
+      <div class="event-top" style="background:#1a4fa0"><div class="event-date" style="background:#e8a020"><span>15</span><span>مارس</span></div><div><div class="event-title">يوم التوجيه الوظيفي</div><div class="event-place">📍 قاعة المؤتمرات · 10:00 ص</div></div></div>
+      <div class="event-body"><p>لقاءات مع ممثلي شركات كبرى وفرص للتدريب والتوظيف لجميع التخصصات</p><button class="event-reg" style="background:#1a4fa0" onclick="location.href='events.html'">سجل الآن</button></div>
+    </div>
+    <div class="event-card">
+      <div class="event-top" style="background:#0f6e56"><div class="event-date" style="background:#1D9E75"><span>22</span><span>مارس</span></div><div><div class="event-title">مسابقة البرمجة الطلابية</div><div class="event-place">📍 مختبر الحاسوب · 9:00 ص</div></div></div>
+      <div class="event-body"><p>تحدٍّ برمجي للطلاب من جميع الكليات مع جوائز قيمة للمراكز الأولى</p><button class="event-reg" style="background:#0f6e56" onclick="location.href='events.html'">سجل الآن</button></div>
+    </div>
+    <div class="event-card">
+      <div class="event-top" style="background:#7f3a0f"><div class="event-date" style="background:#e8a020"><span>28</span><span>مارس</span></div><div><div class="event-title">ندوة ريادة الأعمال</div><div class="event-place">📍 المسرح الجامعي · 2:00 م</div></div></div>
+      <div class="event-body"><p>محاضرات من رواد أعمال ناجحين وجلسات نقاشية مفتوحة للجميع</p><button class="event-reg" style="background:#7f3a0f" onclick="location.href='events.html'">سجل الآن</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0" id="points">
+  <div class="section-header"><div class="section-title">نقاطي ومكافآتي</div></div>
+  <div class="points-widget">
+    <div class="points-top"><div><div class="points-total">340 نقطة</div><div class="points-lbl">رصيدك الحالي</div></div><span class="points-level">🏅 مستوى فضي</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:68%"></div></div>
+    <div class="prog-labels"><span>340 / 500 للمستوى الذهبي</span><span>68%</span></div>
+    <div style="margin-top:14px;border-top:0.5px solid var(--c-border);padding-top:12px">
+      <div style="font-size:12px;font-weight:600;margin-bottom:8px">آخر النشاطات</div>
+      <div class="ph-item"><span class="ph-desc">حضور فعالية يوم التوجيه</span><span class="ph-pts">+50 نقطة</span></div>
+      <div class="ph-item"><span class="ph-desc">رفع ملف دراسي</span><span class="ph-pts">+30 نقطة</span></div>
+      <div class="ph-item"><span class="ph-desc">المشاركة في استطلاع رأي</span><span class="ph-pts">+10 نقطة</span></div>
+      <div class="ph-item"><span class="ph-desc">التسجيل في الموقع</span><span class="ph-pts">+20 نقطة</span></div>
+    </div>
+    <button class="btn-accent" style="width:100%;margin-top:14px">استبدل نقاطك بجوائز 🎁</button>
+  </div>
+</section>
+
+<!-- SUGGESTIONS -->
+<section class="section" style="padding-top:0" id="suggest">
+  <div class="section-header"><div class="section-title">الاقتراحات والشكاوى</div></div>
+  <div class="suggest-form">
+    <p style="font-size:13px;color:var(--c-muted);margin-bottom:16px;line-height:1.7">لديك اقتراح أو شكوى؟ نحن نسمعك! أرسل رسالتك وستصل مباشرة لإدارة الهيئة الطلابية.</p>
+    <form onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group"><label>الاسم</label><input type="text" placeholder="اسمك الكامل" required/></div>
+        <div class="form-group"><label>النوع</label><select><option>اقتراح</option><option>شكوى</option><option>استفسار</option></select></div>
+      </div>
+      <div class="form-group"><label>الرسالة</label><textarea rows="4" placeholder="اكتب اقتراحك أو شكواك هنا..." required></textarea></div>
+      <button type="submit" class="btn-primary">إرسال الرسالة</button>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT QUICK -->
+<section class="section" style="padding-top:0" id="contact-quick">
+  <div class="section-header"><div class="section-title">تواصل معنا</div><a href="contact.html" class="section-link">الصفحة الكاملة ←</a></div>
+  <div class="contact-grid">
+    <div class="contact-card"><div class="contact-icon">📞</div><h4>الهاتف</h4><p>0912 345 678</p></div>
+    <div class="contact-card"><div class="contact-icon">✉️</div><h4>البريد الإلكتروني</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a6d5d2d3c2c3c8d2d5e6d3c8cfd0c3d4d5cfd2df88c3c2d3">[email&#160;protected]</a></p></div>
+    <div class="contact-card"><div class="contact-icon">📍</div><h4>الموقع</h4><p>مبنى الهيئة الطلابية، الحرم الجامعي</p></div>
+    <div class="contact-card"><div class="contact-icon">🕐</div><h4>أوقات العمل</h4><p>الأحد – الخميس، 9 ص – 4 م</p></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><a href="#">رؤيتنا ورسالتنا</a><a href="#">أعضاء الهيئة</a><a href="#">تقارير النشاط</a>
+      <div class="social-links"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">f</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">tg</a></div>
+    </div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a><a href="files.html">الملفات الدراسية</a><a href="register.html">تسجيل الطلاب</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a><a href="#suggest">الاقتراحات</a><a href="#points">النقاط والمكافآت</a></div>
+    <div class="footer-col"><h4>الدعم</h4><a href="contact.html">تواصل معنا</a><a href="#">الأسئلة الشائعة</a><a href="#">سياسة الخصوصية</a><a href="#">شروط الاستخدام</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية — سوريا</span><span>تم التطوير بواسطة فريق التقنية</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup"><div class="chat-popup-title">💬 المساعد الذكي</div><div class="chat-popup-sub">متاح 24/7 للإجابة على أسئلتك</div><div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك اليوم؟ 😊</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="اكتب سؤالك..."/><button class="chat-send" onclick="sendChat()">إرسال</button></div></div>
+  <div class="chat-fab" onclick="toggleChat()"><div class="chat-fab-inner">AI</div></div>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decod

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الملفات الدراسية — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.files-layout{display:grid;grid-template-columns:240px 1fr;gap:0;min-height:60vh}
+.files-sidebar{background:#fff;border-left:0.5px solid var(--c-border);padding:16px}
+.fs-section{margin-bottom:20px}
+.fs-title{font-size:12px;font-weight:700;color:var(--c-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding:0 4px}
+.fs-item{padding:8px 12px;border-radius:9px;cursor:pointer;font-size:13px;transition:background .12s;display:flex;justify-content:space-between;align-items:center}
+.fs-item:hover,.fs-item.active{background:var(--c-light);color:var(--c-primary);font-weight:500}
+.fs-count{font-size:11px;color:var(--c-muted);background:var(--c-light);padding:1px 7px;border-radius:20px}
+.files-main{padding:20px 24px}
+.files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.file-card{background:#fff;border:0.5px solid var(--c-border);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:10px}
+.file-card:hover{border-color:rgba(26,79,160,.3);transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,79,160,.08)}
+.file-icon{width:44px;height:52px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.fi-pdf{background:#FCEBEB}
+.fi-doc{background:#E6F1FB}
+.fi-ppt{background:#FAEEDA}
+.file-name{font-size:13px;font-weight:500;line-height:1.4;flex:1}
+.file-meta{font-size:11px;color:var(--c-muted);display:flex;justify-content:space-between;align-items:center}
+.file-dl{background:var(--c-primary);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .15s}
+.file-dl:hover{opacity:.85}
+.upload-btn{background:var(--c-accent);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:440px;position:relative}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.modal-close{position:absolute;top:16px;left:16px;width:30px;height:30px;border-radius:50%;border:none;background:var(--c-light);cursor:pointer;font-size:16px}
+.upload-area{border:2px dashed var(--c-border);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:border-color .15s;margin-bottom:14px}
+.upload-area:hover{border-color:var(--c-primary)}
+.upload-area p{font-size:13px;color:var(--c-muted);margin-top:8px}
+@media(max-width:768px){.files-layout{grid-template-columns:1fr}.files-sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a>
+    <a href="files.html" class="active">الملفات</a>
+    <a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a>
+  </div>
+  <div class="nav-actions"><button class="btn-login" onclick="location.href='register.html'">تسجيل / دخول</button></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>الملفات الدراسية</span></div>
+  <h1>📚 الملفات الدراسية</h1>
+  <p>تصفح وحمّل الملفات الدراسية المصنفة حسب الكلية والسنة والمادة</p>
+</div>
+
+<div class="toolbar">
+  <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="ابحث في الملفات..." oninput="filterFiles()"/></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="filter-btn active" onclick="setFilter(this,'all')">الكل</button>
+    <button class="filter-btn" onclick="setFilter(this,'pdf')">📄 PDF</button>
+    <button class="filter-btn" onclick="setFilter(this,'ملخص')">📝 ملخصات</button>
+    <button class="filter-btn" onclick="setFilter(this,'محاضرة')">🎓 محاضرات</button>
+    <button class="filter-btn" onclick="setFilter(this,'امتحان')">📋 نماذج امتحانات</button>
+  </div>
+  <button class="upload-btn" onclick="document.getElementById('uploadModal').classList.add('open')">⬆️ رفع ملف</button>
+</div>
+
+<div class="files-layout">
+  <div class="files-sidebar">
+    <div class="fs-section">
+      <div class="fs-title">الكلية</div>
+      <div class="fs-item active" onclick="filterCat(this,'all')">جميع الكليات</div>
+      <div class="fs-item" onclick="filterCat(this,'علوم')">كلية العلوم <span class="fs-count">12</span></div>
+      <div class="fs-item" onclick="filterCat(this,'هندسة')">كلية الهندسة <span class="fs-count">18</span></div>
+      <div class="fs-item" onclick="filterCat(this,'آداب')">كلية الآداب <span class="fs-count">7</span></div>
+      <div class="fs-item" onclick="filterCat(this,'طب')">كلية الطب <span class="fs-count">9</span></div>
+      <div class="fs-item" onclick="filterCat(this,'اقتصاد')">كلية الاقتصاد <span class="fs-count">5</span></div>
+    </div>
+    <div class="fs-section">
+      <div class="fs-title">السنة الدراسية</div>
+      <div class="fs-item" onclick="filterCat(this,'أولى')">السنة الأولى</div>
+      <div class="fs-item" onclick="filterCat(this,'ثانية')">السنة الثانية</div>
+      <div class="fs-item" onclick="filterCat(this,'ثالثة')">السنة الثالثة</div>
+      <div class="fs-item" onclick="filterCat(this,'رابعة')">السنة الرابعة</div>
+    </div>
+    <div class="fs-section">
+      <div class="fs-title">نوع الملف</div>
+      <div class="fs-item" onclick="filterCat(this,'pdf')">📄 PDF</div>
+      <div class="fs-item" onclick="filterCat(this,'ملخص')">📝 ملخصات</div>
+      <div class="fs-item" onclick="filterCat(this,'محاضرة')">🎓 محاضرات</div>
+      <div class="fs-item" onclick="filterCat(this,'امتحان')">📋 نماذج امتحانات</div>
+    </div>
+  </div>
+
+  <div class="files-main" id="filesMain">
+    <div class="section-header" style="margin-bottom:14px">
+      <div class="section-title">الملفات المتاحة</div>
+      <span style="font-size:11px;color:var(--c-muted)">51 ملف متاح</span>
+    </div>
+    <div class="files-grid" id="filesGrid">
+
+      <div class="file-card" data-cat="هندسة ملخص">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-pdf">📄</div>
+          <div style="flex:1"><div class="file-name">ملخص مادة الخوارزميات — الفصل الثاني</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الهندسة · السنة الثانية</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 2.3 MB · 45 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="علوم محاضرة">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-doc">🎓</div>
+          <div style="flex:1"><div class="file-name">محاضرات الكيمياء العضوية — الكاملة</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية العلوم · السنة الثالثة</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 8.1 MB · 120 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="هندسة امتحان">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-ppt">📋</div>
+          <div style="flex:1"><div class="file-name">نموذج امتحان هندسة البرمجيات 2024</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الهندسة · السنة الرابعة</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 1.5 MB · 12 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="طب ملخص">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-pdf">📄</div>
+          <div style="flex:1"><div class="file-name">ملخص علم التشريح — الجهاز العصبي</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الطب · السنة الثانية</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 5.7 MB · 88 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="آداب محاضرة">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-doc">🎓</div>
+          <div style="flex:1"><div class="file-name">محاضرات اللغة العربية وآدابها</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الآداب · السنة الأولى</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 3.2 MB · 60 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="علوم امتحان">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-ppt">📋</div>
+          <div style="flex:1"><div class="file-name">نماذج امتحانات الفيزياء 2022–2024</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية العلوم · السنة الأولى</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 4.0 MB · 55 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="اقتصاد ملخص">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-pdf">📄</div>
+          <div style="flex:1"><div class="file-name">ملخص الاقتصاد الكلي — الفصل الأول</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الاقتصاد · السنة الثالثة</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 1.8 MB · 30 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+      <div class="file-card" data-cat="هندسة محاضرة">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="file-icon fi-doc">🎓</div>
+          <div style="flex:1"><div class="file-name">محاضرات الدوائر الكهربائية</div><div style="font-size:11px;color:var(--c-muted);margin-top:4px">كلية الهندسة · السنة الأولى</div></div>
+        </div>
+        <div class="file-meta"><span>PDF · 6.4 MB · 95 صفحة</span><button class="file-dl" onclick="showToast('جاري التحميل...','success')">⬇️ حمّل</button></div>
+      </div>
+
+    </div>
+    <div class="pagination">
+      <div class="pg active">1</div><div class="pg">2</div><div class="pg">3</div><div class="pg">···</div><div class="pg">6</div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-overlay" id="uploadModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('uploadModal').classList.remove('open')">✕</button>
+    <h3>⬆️ رفع ملف دراسي جديد</h3>
+    <form onsubmit="submitUpload(event)">
+      <div class="upload-area" onclick="showToast('يرجى اختيار الملف من جهازك','success')">
+        <div style="font-size:36px">📁</div>
+        <p>انقر لاختيار الملف أو اسحبه هنا<br/><span style="font-size:11px">PDF, DOC, PPT — الحجم الأقصى 20MB</span></p>
+      </div>
+      <div class="form-group"><label>اسم الملف</label><input type="text" placeholder="مثال: ملخص الخوارزميات الفصل الثاني" required/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label>الكلية</label><select><option>اختر الكلية</option><option>كلية العلوم</option><option>كلية الهندسة</option><option>كلية الآداب</option><option>كلية الطب</option><option>كلية الاقتصاد</option></select></div>
+        <div class="form-group"><label>السنة الدراسية</label><select><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option></select></div>
+      </div>
+      <div class="form-group"><label>نوع الملف</label><select><option>ملخص</option><option>محاضرات</option><option>نموذج امتحان</option><option>مرجع دراسي</option></select></div>
+      <button type="submit" class="btn-primary" style="width:100%">رفع الملف</button>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><div class="social-links"><a class="social-btn">𝕏</a><a class="social-btn">f</a><a class="social-btn">tg</a></div></div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية</span><span>تم التطوير بواسطة فريق التقنية</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup"><div class="chat-popup-title">💬 المساعد الذكي</div><div class="chat-popup-sub">متاح 24/7</div><div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك؟</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="اكتب سؤالك..."/><button class="chat-send" onclick="sendChat()">إرسال</button></div></div>
+  <div class="chat-fab" onclick="toggleChat()"><div class="chat-fab-inner">AI</div></div>
+</div>
+<script src="shared.js"></script>
+<script>
+var activeFilter='all';
+function setFilter(btn,cat){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');activeFilter=cat;filterFiles();}
+function filterCat(el,cat){document.querySelectorAll('.fs-item').forEach(function(i){i.classList.remove('active')});el.classList.add('active');activeFilter=cat;filterFiles();}
+function filterFiles(){var q=document.getElementById('searchInput').value.trim().toLowerCase();document.querySelectorAll('.file-card').forEach(function(c){var cat=c.getAttribute('data-cat')||'';var txt=c.innerText.toLowerCase();c.style.display=((activeFilter==='all'||cat.includes(activeFilter))&&(q===''||txt.includes(q)))?'flex':'none';});}
+function submitUpload(e){e.preventDefault();document.getElementById('uploadModal').classList.remove('open');showToast('تم رفع الملف بنجاح! سيتم مراجعته قريباً ✅','success');}
+</script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>لوحة التحكم — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--c-primary:#1a4fa0;--c-accent:#e8a020;--c-green:#1D9E75;--c-sidebar:#0f2d6b;--c-text:#1a2340;--c-muted:#6b7a9a;--c-border:rgba(26,79,160,0.12);--c-light:#f4f7fb}
+body{font-family:'Cairo',sans-serif;background:var(--c-light);color:var(--c-text);display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:240px;background:var(--c-sidebar);display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-logo{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-logo-icon{width:34px;height:34px;background:var(--c-accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-logo-text{color:#fff;font-size:14px;font-weight:700;line-height:1.3}
+.sb-logo-sub{font-size:10px;color:rgba(255,255,255,.6)}
+.sb-section{padding:14px 12px 4px;font-size:10px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:.5px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;color:rgba(255,255,255,.8);font-size:13px;cursor:pointer;transition:all .15s;border-radius:8px;margin:2px 8px;text-decoration:none}
+.sb-item:hover,.sb-item.active{background:rgba(255,255,255,.12);color:#fff}
+.sb-item .sb-icon{width:20px;text-align:center;font-size:15px}
+.sb-badge{background:var(--c-accent);color:#fff;font-size:10px;padding:1px 7px;border-radius:20px;margin-right:auto}
+.sb-item.active{background:rgba(255,255,255,.15)}
+.sb-divider{height:1px;background:rgba(255,255,255,.08);margin:8px 16px}
+
+/* MAIN */
+.main{margin-right:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:0.5px solid var(--c-border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:16px;font-weight:700;color:var(--c-primary)}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.notif-btn{width:36px;height:36px;border-radius:9px;border:0.5px solid var(--c-border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative}
+.notif-dot{position:absolute;top:6px;left:6px;width:8px;height:8px;background:#e74c3c;border-radius:50%;border:2px solid #fff}
+.admin-avatar{width:36px;height:36px;border-radius:50%;background:var(--c-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.content{padding:24px;flex:1}
+
+/* STATS CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:18px}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.sc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.sc-trend{font-size:11px;font-weight:600}
+.sc-trend.up{color:#0F6E56}
+.sc-trend.down{color:#A32D2D}
+.sc-num{font-size:26px;font-weight:700;color:var(--c-text);margin-bottom:2px}
+.sc-label{font-size:12px;color:var(--c-muted)}
+
+/* TABLE */
+.table-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;overflow:hidden;margin-bottom:18px}
+.tc-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid var(--c-border)}
+.tc-title{font-size:14px;font-weight:700}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{background:var(--c-light);padding:10px 16px;text-align:right;font-weight:600;font-size:12px;color:var(--c-muted)}
+.admin-table td{padding:12px 16px;border-bottom:0.5px solid var(--c-border)}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:#f8fafd}
+.action-btns{display:flex;gap:6px}
+.act-btn{padding:4px 10px;border-radius:7px;border:none;font-size:11px;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .15s}
+.act-edit{background:#E6F1FB;color:#185FA5}
+.act-del{background:#FCEBEB;color:#A32D2D}
+.act-view{background:#E1F5EE;color:#0F6E56}
+.act-btn:hover{opacity:.8}
+
+/* STATUS BADGES */
+.status{font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block}
+.s-published{background:#E1F5EE;color:#0F6E56}
+.s-draft{background:#F1EFE8;color:#5F5E5A}
+.s-pending{background:#FAEEDA;color:#854F0B}
+
+/* PANELS */
+.panels-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.panel{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:18px}
+.panel-title{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.activity-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid rgba(26,79,160,.06)}
+.activity-item:last-child{border-bottom:none}
+.act-dot{width:8px;height:8px;border-radius:50%;background:var(--c-primary);margin-top:5px;flex-shrink:0}
+.act-text{flex:1;font-size:12px;line-height:1.5}
+.act-time{font-size:11px;color:var(--c-muted)}
+.mini-chart{height:60px;display:flex;align-items:flex-end;gap:4px;margin-top:8px}
+.bar{flex:1;border-radius:4px 4px 0 0;background:var(--c-primary);opacity:.7;transition:opacity .15s;cursor:pointer}
+.bar:hover{opacity:1}
+.bar-labels{display:flex;gap:4px;margin-top:4px}
+.bar-lbl{flex:1;text-align:center;font-size:9px;color:var(--c-muted)}
+
+/* FORM IN PANEL */
+.quick-form .form-group{margin-bottom:10px}
+.quick-form label{font-size:11px;color:var(--c-muted);display:block;margin-bottom:4px}
+.quick-form input,.quick-form select,.quick-form textarea{width:100%;border:0.5px solid var(--c-border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:'Cairo',sans-serif;outline:none}
+.quick-form input:focus,.quick-form select:focus,.quick-form textarea:focus{border-color:rgba(26,79,160,.4)}
+
+/* SECTION TABS */
+.section-tabs{display:none}
+.section-tabs.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">⚙️</div>
+    <div><div class="sb-logo-text">لوحة التحكم</div><div class="sb-logo-sub">الهيئة الطلابية</div></div>
+  </div>
+
+  <div class="sb-section">عام</div>
+  <a class="sb-item active" onclick="showTab('dashboard')"><span class="sb-icon">📊</span> الإحصائيات</a>
+
+  <div class="sb-section">المحتوى</div>
+  <a class="sb-item" onclick="showTab('news-admin')"><span class="sb-icon">📰</span> إدارة الأخبار</a>
+  <a class="sb-item" onclick="showTab('events-admin')"><span class="sb-icon">📅</span> إدارة الفعاليات</a>
+  <a class="sb-item" onclick="showTab('files-admin')"><span class="sb-icon">📚</span> إدارة الملفات</a>
+  <a class="sb-item" onclick="showTab('comps-admin')"><span class="sb-icon">🎯</span> إدارة المسابقات</a>
+
+  <div class="sb-section">الطلاب</div>
+  <a class="sb-item" onclick="showTab('students-admin')"><span class="sb-icon">👥</span> الطلاب المسجلون</a>
+  <a class="sb-item" onclick="showTab('points-admin')"><span class="sb-icon">🎁</span> النقاط والمكافآت</a>
+
+  <div class="sb-section">التفاعل</div>
+  <a class="sb-item" onclick="showTab('polls-admin')"><span class="sb-icon">📊</span> التصويتات</a>
+  <a class="sb-item" onclick="showTab('suggestions-admin')"><span class="sb-icon">💡</span> الاقتراحات <span class="sb-badge">5</span></a>
+
+  <div class="sb-divider"></div>
+  <a class="sb-item" onclick="showTab('settings-admin')"><span class="sb-icon">⚙️</span> إعدادات الموقع</a>
+  <a class="sb-item" href="index.html" style="margin-bottom:12px"><span class="sb-icon">🌐</span> عرض الموقع</a>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">لوحة الإحصائيات</div>
+    <div class="topbar-actions">
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <div class="admin-avatar" title="المدير">م</div>
+      <button style="background:transparent;border:0.5px solid var(--c-border);border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer;color:var(--c-muted)" onclick="location.href='index.html'">← خروج</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section-tabs active">
+      <div class="stats-row">
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#E6F1FB">👥</div><span class="sc-trend up">+12% ↑</span></div><div class="sc-num">1,240</div><div class="sc-label">طالب مسجل</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#EAF3DE">📰</div><span class="sc-trend up">+8% ↑</span></div><div class="sc-num">24</div><div class="sc-label">خبر هذا الشهر</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#FAEEDA">📅</div><span class="sc-trend up">+3</span></div><div class="sc-num">6</div><div class="sc-label">فعاليات قادمة</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#E1F5EE">📚</div><span class="sc-trend up">+5 ↑</span></div><div class="sc-num">51</div><div class="sc-label">ملف دراسي</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#EEEDFE">📊</div><span class="sc-trend up">1,048 صوت</span></div><div class="sc-num">8</div><div class="sc-label">استطلاع نشط</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:#FCEBEB">💡</div><span class="sc-trend down">5 معلقة</span></div><div class="sc-num">18</div><div class="sc-label">اقتراح وصل</div></div>
+      </div>
+
+      <div class="panels-grid">
+        <div class="panel">
+          <div class="panel-title">آخر النشاطات <span style="font-size:11px;color:var(--c-muted);font-weight:400">اليوم</span></div>
+          <div class="activity-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">طالب جديد سجّل: <strong>أحمد محمد</strong></div><div class="act-time">منذ 5 دقائق</div></div></div>
+          <div class="activity-item"><div class="act-dot"></div><div><div class="act-text">تم رفع ملف دراسي جديد</div><div class="act-time">منذ 12 دقيقة</div></div></div>
+          <div class="activity-item"><div class="act-dot" style="background:#e8a020"></div><div><div class="act-text">اقتراح جديد بانتظار المراجعة</div><div class="act-time">منذ 30 دقيقة</div></div></div>
+          <div class="activity-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">تم التصويت 48 مرة في آخر ساعة</div><div class="act-time">منذ ساعة</div></div></div>
+          <div class="activity-item"><div class="act-dot" style="background:#A32D2D"></div><div><div class="act-text">تسجيل في فعالية البرمجة: <strong>22 طالب</strong></div><div class="act-time">منذ ساعتين</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">تسجيلات الطلاب (أسبوعياً)</div>
+          <div class="mini-chart">
+            <div class="bar" style="height:40%"></div>
+            <div class="bar" style="height:65%"></div>
+            <div class="bar" style="height:50%"></div>
+            <div class="bar" style="height:80%"></div>
+            <div class="bar" style="height:55%"></div>
+            <div class="bar" style="height:90%;background:var(--c-accent);opacity:1"></div>
+            <div class="bar" style="height:70%"></div>
+          </div>
+          <div class="bar-labels"><span class="bar-lbl">أحد</span><span class="bar-lbl">اث</span><span class="bar-lbl">ثل</span><span class="bar-lbl">أرب</span><span class="bar-lbl">خم</span><span class="bar-lbl">جم</span><span class="bar-lbl">سب</span></div>
+          <div style="margin-top:12px;display:flex;gap:12px">
+            <div style="flex:1;background:var(--c-light);border-radius:9px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--c-primary)">42</div><div style="font-size:10px;color:var(--c-muted)">تسجيل هذا الأسبوع</div></div>
+            <div style="flex:1;background:var(--c-light);border-radius:9px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--c-green)">94%</div><div style="font-size:10px;color:var(--c-muted)">نسبة اكتمال البيانات</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick add news -->
+      <div class="panel">
+        <div class="panel-title">إضافة خبر سريع</div>
+        <form class="quick-form" onsubmit="quickAdd(event)">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="form-group"><label>عنوان الخبر *</label><input type="text" placeholder="اكتب عنوان الخبر" required/></div>
+            <div class="form-group"><label>التصنيف</label><select><option>الهيئة الطلابية</option><option>أخبار الجامعة</option><option>كلية العلوم</option><option>كلية الهندسة</option><option>كلية الآداب</option><option>كلية الطب</option></select></div>
+            <div class="form-group"><label>الحالة</label><select><option>منشور</option><option>مسودة</option></select></div>
+          </div>
+          <div class="form-group"><label>محتوى الخبر</label><textarea rows="3" placeholder="اكتب تفاصيل الخبر هنا..."></textarea></div>
+          <div style="display:flex;gap:10px">
+            <button type="submit" style="background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer">نشر الخبر</button>
+            <button type="button" style="background:var(--c-light);color:var(--c-muted);border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">حفظ كمسودة</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- STUDENTS TABLE -->
+    <div id="students-admin" class="section-tabs">
+      <div class="table-card">
+        <div class="tc-header">
+          <div class="tc-title">👥 الطلاب المسجلون</div>
+          <div style="display:flex;gap:8px">
+            <input type="text" placeholder="ابحث عن طالب..." style="border:0.5px solid var(--c-border);border-radius:8px;padding:7px 12px;font-size:12px;font-family:'Cairo',sans-serif;outline:none"/>
+            <button style="background:var(--c-green);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer">⬇️ تصدير Excel</button>
+          </div>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>الاسم</th><th>الكلية</th><th>السنة</th><th>البريد</th><th>المحافظة</th><th>النقاط</th><th>إجراءات</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>أحمد محمد علي</td><td>الهندسة المعلوماتية</td><td>الثالثة</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bedfd6d3dbdafecbd0d790dbdacb">[email&#160;protected]</a></td><td>دمشق</td><td><span style="color:var(--c-accent);font-weight:600">340</span></td><td><div class="action-btns"><button class="act-btn act-view">عرض</button><button class="act-btn act-edit">تعديل</button><button class="act-btn act-del">حذف</button></div></td></tr>
+            <tr><td>2</td><td>سارة يوسف</td><td>كلية العلوم</td><td>الثانية</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="592a382b38192c3730773c3d2c">[email&#160;protected]</a></td><td>حلب</td><td><span style="color:var(--c-accent);font-weight:600">220</span></td><td><div class="action-btns"><button class="act-btn act-view">عرض</button><button class="act-btn act-edit">تعديل</button><button class="act-btn act-del">حذف</button></div></td></tr>
+            <tr><td>3</td><td>عمر خالد</td><td>الطب البشري</td><td>الأولى</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c8a7a5a9ba88bda6a1e6adacbd">[email&#160;protected]</a></td><td>اللاذقية</td><td><span style="color:var(--c-accent);font-weight:600">180</span></td><td><div class="action-btns"><button class="act-btn act-view">عرض</button><button class="act-btn act-edit">تعديل</button><button class="act-btn act-del">حذف</button></div></td></tr>
+            <tr><td>4</td><td>لمى حسن</td><td>الآداب والعلوم الإنسانية</td><td>الرابعة</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1cdc0ccc0e1d4cfc88fc4c5d4">[email&#160;protected]</a></td><td>حمص</td><td><span style="color:var(--c-accent);font-weight:600">510</span></td><td><div class="action-btns"><button class="act-btn act-view">عرض</button><button class="act-btn act-edit">تعديل</button><button class="act-btn act-del">حذف</button></div></td></tr>
+            <tr><td>5</td><td>كرار علي</td><td>الهندسة المعلوماتية</td><td>الثانية</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9ef5ffececffecdeebf0f7b0fbfaeb">[email&#160;protected]</a></td><td>طرطوس</td><td><span style="color:var(--c-accent);font-weight:600">290</span></td><td><div class="action-btns"><button class="act-btn act-view">عرض</button><button class="act-btn act-edit">تعديل</button><button class="act-btn act-del">حذف</button></div></td></tr>
+          </tbody>
+        </table>
+        <div style="padding:12px 18px;display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid var(--c-border)">
+          <span style="font-size:12px;color:var(--c-muted)">عرض 5 من 1,240 طالب</span>
+          <div style="display:flex;gap:6px"><button style="padding:5px 12px;border:0.5px solid var(--c-border);border-radius:7px;background:#fff;cursor:pointer;font-size:12px">السابق</button><button style="padding:5px 12px;border:0.5px solid var(--c-primary);border-radius:7px;background:var(--c-primary);color:#fff;cursor:pointer;font-size:12px">التالي</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUGGESTIONS TABLE -->
+    <div id="suggestions-admin" class="section-tabs">
+      <div class="table-card">
+        <div class="tc-header"><div class="tc-title">💡 الاقتراحات والشكاوى</div></div>
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>المرسل</th><th>النوع</th><th>الموضوع</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>طالب مجهول</td><td><span class="status s-pending">شكوى</span></td><td>مشكلة في قاعات الدراسة</td><td>منذ ساعة</td><td><span class="status s-pending">معلقة</span></td><td><div class="action-btns"><button class="act-btn act-view">قراءة</button><button class="act-btn act-edit">رد</button></div></td></tr>
+            <tr><td>2</td><td>سارة م.</td><td><span class="status s-published">اقتراح</span></td><td>إضافة رحلات ترفيهية</td><td>أمس</td><td><span class="status s-published">تمت المراجعة</span></td><td><div class="action-btns"><button class="act-btn act-view">قراءة</button><button class="act-btn act-edit">رد</button></div></td></tr>
+            <tr><td>3</td><td>أحمد ع.</td><td><span class="status s-pending">شكوى</span></td><td>بطء الإنترنت في المكتبة</td><td>منذ يومين</td><td><span class="status s-pending">معلقة</span></td><td><div class="action-btns"><button class="act-btn act-view">قراءة</button><button class="act-btn act-edit">رد</button></div></td></tr>
+            <tr><td>4</td><td>طالب مجهول</td><td><span class="status s-draft">استفسار</span></td><td>موعد المنح الدراسية</td><td>منذ 3 أيام</td><td><span class="status s-published">تمت الإجابة</span></td><td><div class="action-btns"><button class="act-btn act-view">قراءة</button><button class="act-btn act-edit">رد</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings-admin" class="section-tabs">
+      <div class="panels-grid">
+        <div class="panel">
+          <div class="panel-title">⚙️ إعدادات الموقع</div>
+          <form class="quick-form" onsubmit="saveSettings(event)">
+            <div class="form-group"><label>اسم الهيئة الطلابية</label><input type="text" value="الهيئة الطلابية"/></div>
+            <div class="form-group"><label>البريد الرسمي</label><input type="email" value="students@university.edu.sy"/></div>
+            <div class="form-group"><label>رقم الهاتف</label><input type="tel" value="0912 345 678"/></div>
+            <div class="form-group"><label>العام الدراسي</label><input type="text" value="2024–2025"/></div>
+            <button type="submit" style="background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer;margin-top:4px">حفظ الإعدادات</button>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel-title">🌐 روابط التواصل الاجتماعي</div>
+          <form class="quick-form" onsubmit="saveSettings(event)">
+            <div class="form-group"><label>فيسبوك</label><input type="url" value="https://facebook.com/StudentBodyPage"/></div>
+            <div class="form-group"><label>تويتر / X</label><input type="url" value="https://twitter.com/StudentBody_Uni"/></div>
+            <div class="form-group"><label>انستغرام</label><input type="url" value="https://instagram.com/studentbody.uni"/></div>
+            <div class="form-group"><label>تيليغرام (القناة)</label><input type="url" value="https://t.me/StudentBodyChannel"/></div>
+            <button type="submit" style="background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-family:'Cairo',sans-serif;font-weight:600;cursor:pointer;margin-top:4px">حفظ الروابط</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder sections -->
+    <div id="news-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">📰</div><p style="font-size:14px">قسم إدارة الأخبار — يمكنك إضافة وتعديل وحذف الأخبار من هنا</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ إضافة خبر جديد</button></div></div>
+    <div id="events-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">📅</div><p style="font-size:14px">قسم إدارة الفعاليات — يمكنك إضافة وتعديل الفعاليات والأنشطة</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ إضافة فعالية جديدة</button></div></div>
+    <div id="files-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">📚</div><p style="font-size:14px">قسم إدارة الملفات الدراسية — مراجعة ورفع الملفات</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ رفع ملف جديد</button></div></div>
+    <div id="comps-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">🎯</div><p style="font-size:14px">قسم إدارة المسابقات — إضافة المسابقات وإعلان النتائج</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ إضافة مسابقة</button></div></div>
+    <div id="points-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">🎁</div><p style="font-size:14px">قسم إدارة النقاط والمكافآت — إضافة ومنح النقاط للطلاب</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ إضافة مكافأة</button></div></div>
+    <div id="polls-admin" class="section-tabs"><div style="background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:32px;text-align:center;color:var(--c-muted)"><div style="font-size:48px;margin-bottom:12px">📊</div><p style="font-size:14px">قسم إدارة التصويتات — إنشاء ومتابعة الاستطلاعات</p><button style="margin-top:14px;background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-family:'Cairo',sans-serif;cursor:pointer">+ إنشاء استطلاع</button></div></div>
+
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+var tabs={dashboard:'لوحة الإحصائيات','news-admin':'إدارة الأخبار','events-admin':'إدارة الفعاليات','files-admin':'إدارة الملفات','students-admin':'الطلاب المسجلون','points-admin':'النقاط والمكافآت','polls-admin':'التصويتات','suggestions-admin':'الاقتراحات والشكاوى','comps-admin':'المسابقات','settings-admin':'إعدادات الموقع'};
+function showTab(id){document.querySelectorAll('.section-tabs').forEach(function(t){t.classList.remove('active')});document.getElementById(id).classList.add('active');document.querySelectorAll('.sb-item').forEach(function(a){a.classList.remove('active')});document.querySelectorAll('.sb-item').forEach(function(a){if(a.getAttribute('onclick')&&a.getAttribute('onclick').incl

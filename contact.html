@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>تواصل معنا — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px;max-width:1100px;margin:0 auto}
+.contact-info{display:flex;flex-direction:column;gap:14px}
+.info-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:20px;display:flex;gap:16px;align-items:flex-start}
+.info-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.info-content h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.info-content p{font-size:13px;color:var(--c-muted);line-height:1.6}
+.info-content a{color:var(--c-primary);text-decoration:none;font-size:13px}
+.info-content a:hover{text-decoration:underline}
+.form-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:24px}
+.form-card h2{font-size:17px;font-weight:700;margin-bottom:6px}
+.form-card p{font-size:13px;color:var(--c-muted);margin-bottom:20px;line-height:1.7}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;padding:0 24px 24px;max-width:1100px;margin:0 auto}
+.member-card{background:#fff;border:0.5px solid var(--c-border);border-radius:14px;padding:18px;text-align:center}
+.member-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 10px}
+.member-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.member-role{font-size:11px;color:var(--c-muted)}
+.social-section{padding:0 24px 24px;max-width:1100px;margin:0 auto}
+.social-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.social-card{background:#fff;border:0.5px solid var(--c-border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .15s}
+.social-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(26,79,160,.1)}
+.social-card .sc-icon{font-size:28px;margin-bottom:8px}
+.social-card h4{font-size:13px;font-weight:600;margin-bottom:3px}
+.social-card p{font-size:11px;color:var(--c-muted)}
+@media(max-width:768px){.contact-layout{grid-template-columns:1fr}.members-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a>
+    <a href="files.html">الملفات</a><a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a>
+    <a href="contact.html" class="active">تواصل معنا</a>
+  </div>
+  <div class="nav-actions"><button class="btn-login" onclick="location.href='register.html'">تسجيل / دخول</button></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>تواصل معنا</span></div>
+  <h1>👥 تواصل معنا</h1>
+  <p>نحن هنا لمساعدتك! تواصل معنا عبر القنوات المتاحة</p>
+</div>
+
+<div class="contact-layout">
+  <div class="contact-info">
+    <div class="info-card"><div class="info-icon" style="background:#E6F1FB">📞</div><div class="info-content"><h4>الهاتف</h4><p>للتواصل المباشر مع فريق الهيئة الطلابية</p><a href="tel:0912345678">0912 345 678</a><br/><a href="tel:0932345678" style="font-size:12px;color:var(--c-muted)">0932 345 678 (واتساب)</a></div></div>
+    <div class="info-card"><div class="info-icon" style="background:#EAF3DE">✉️</div><div class="info-content"><h4>البريد الإلكتروني</h4><p>للاستفسارات والمراسلات الرسمية</p><a href="/cdn-cgi/l/email-protection#8ffcfbfaebeae1fbfccffae1e6f9eafdfce6fbf6a1eaebfa"><span class="__cf_email__" data-cfemail="c2b1b6b7a6a7acb6b182b7acabb4a7b0b1abb6bbeca7a6b7">[email&#160;protected]</span></a><br/><a href="/cdn-cgi/l/email-protection#523b3c343d12273c3b243720213b262b7c373627" style="font-size:12px;color:var(--c-muted)"><span class="__cf_email__" data-cfemail="4b22252d240b3e25223d2e3938223f32652e2f3e">[email&#160;protected]</span></a></div></div>
+    <div class="info-card"><div class="info-icon" style="background:#FAEEDA">📍</div><div class="info-content"><h4>الموقع الجغرافي</h4><p>مبنى الهيئة الطلابية، الطابق الثاني<br/>الحرم الجامعي الرئيسي، الجهة الغربية</p></div></div>
+    <div class="info-card"><div class="info-icon" style="background:#FBEAF0">🕐</div><div class="info-content"><h4>أوقات الدوام</h4><p>الأحد – الخميس: 9:00 ص – 4:00 م<br/>الجمعة والسبت: مغلق</p></div></div>
+    <div class="info-card" style="background:linear-gradient(135deg,#0f2d6b,#1a4fa0);border:none"><div class="info-icon" style="background:rgba(255,255,255,.15)">💬</div><div class="info-content"><h4 style="color:#fff">المساعد الذكي</h4><p style="color:rgba(255,255,255,.8)">متاح 24 ساعة يومياً للإجابة على استفساراتك</p><a style="color:var(--c-accent);font-weight:600" href="javascript:toggleChat()">فتح المحادثة ←</a></div></div>
+  </div>
+
+  <div class="form-card">
+    <h2>أرسل لنا رسالة</h2>
+    <p>لديك سؤال أو اقتراح أو شكوى؟ أرسل لنا وسنرد عليك في أقرب وقت.</p>
+    <form onsubmit="submitContact(event)">
+      <div class="form-row">
+        <div class="form-group"><label>الاسم الكامل *</label><input type="text" placeholder="اسمك" required/></div>
+        <div class="form-group"><label>الكلية</label><select><option value="">اختر</option>
+            <option>كلية الهندسة المعلوماتية</option>
+            <option>كلية الهندسة المدنية</option>
+            <option>كلية الهندسة الميكانيكية والكهربائية</option>
+            <option>كلية العلوم</option>
+            <option>كلية الطب البشري</option>
+            <option>كلية طب الأسنان</option>
+            <option>كلية الصيدلة</option>
+            <option>كلية الآداب والعلوم الإنسانية</option>
+            <option>كلية الاقتصاد</option>
+            <option>كلية الحقوق</option>
+            <option>كلية التربية</option>
+            <option>أخرى</option></select></div>
+      </div>
+      <div class="form-group"><label>البريد الإلكتروني *</label><input type="email" placeholder="example@university.edu.sy" required/></div>
+      <div class="form-group"><label>موضوع الرسالة</label><select><option>استفسار عام</option><option>اقتراح</option><option>شكوى</option><option>طلب دعم</option><option>تعاون</option></select></div>
+      <div class="form-group"><label>الرسالة *</label><textarea rows="5" placeholder="اكتب رسالتك هنا..." required></textarea></div>
+      <button type="submit" class="btn-primary" style="width:100%">إرسال الرسالة ✉️</button>
+    </form>
+  </div>
+</div>
+
+<!-- Team Members -->
+<div style="padding:0 24px;max-width:1100px;margin:0 auto">
+  <div class="section-header"><div class="section-title">أعضاء الهيئة الطلابية</div></div>
+</div>
+<div class="members-grid">
+  <div class="member-card"><div class="member-avatar" style="background:#E6F1FB;color:#185FA5">رع</div><div class="member-name">رامي عبدالله</div><div class="member-role">رئيس الهيئة الطلابية</div></div>
+  <div class="member-card"><div class="member-avatar" style="background:#EAF3DE;color:#0F6E56">سم</div><div class="member-name">سارة محمود</div><div class="member-role">نائب الرئيس</div></div>
+  <div class="member-card"><div class="member-avatar" style="background:#FAEEDA;color:#854F0B">عخ</div><div class="member-name">عمر خالد</div><div class="member-role">مسؤول الفعاليات</div></div>
+  <div class="member-card"><div class="member-avatar" style="background:#FBEAF0;color:#993556">لح</div><div class="member-name">لمى حسن</div><div class="member-role">مسؤولة الإعلام</div></div>
+  <div class="member-card"><div class="member-avatar" style="background:#EEEDFE;color:#3C3489">كع</div><div class="member-name">كرار علي</div><div class="member-role">مسؤول التقنية</div></div>
+  <div class="member-card"><div class="member-avatar" style="background:#E1F5EE;color:#0F6E56">نج</div><div class="member-name">نور جمال</div><div class="member-role">مسؤولة المالية</div></div>
+</div>
+
+<!-- Social Media -->
+<div class="social-section">
+  <div class="section-header"><div class="section-title">تابعنا على التواصل الاجتماعي</div></div>
+  <div class="social-grid">
+    <div class="social-card"><div class="sc-icon">📘</div><h4>فيسبوك</h4><p>@StudentBodyPage</p></div>
+    <div class="social-card"><div class="sc-icon">𝕏</div><h4>تويتر / X</h4><p>@StudentBody_Uni</p></div>
+    <div class="social-card"><div class="sc-icon">📸</div><h4>انستغرام</h4><p>@studentbody.uni</p></div>
+    <div class="social-card"><div class="sc-icon">💬</div><h4>تيليغرام</h4><p>t.me/StudentBodyChannel</p></div>
+    <div class="social-card"><div class="sc-icon">🎬</div><h4>يوتيوب</h4><p>StudentBody University</p></div>
+    <div class="social-card" style="background:linear-gradient(135deg,#0f2d6b,#1a4fa0);border:none"><div class="sc-icon">🤖</div><h4 style="color:#fff">بوت تيليغرام</h4><p style="color:rgba(255,255,255,.75)">ربط تلقائي مع الموقع</p></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><a href="#">أعضاء الهيئة</a><div class="social-links"><a class="social-btn">𝕏</a><a class="social-btn">f</a><a class="social-btn">tg</a></div></div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="vote.html">التصويتات</a><a href="competitions.html">المسابقات</a><a href="files.html">الملفات</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup"><div class="chat-popup-title">💬 المساعد الذكي</div><div class="chat-popup-sub">متاح 24/7</div><div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك؟</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="اكتب سؤالك..."/><button class="chat-send" onclick="sendChat()">إرسال</button></div></div>
+  <div class="chat-fab" onclick="toggleChat()"><div cl

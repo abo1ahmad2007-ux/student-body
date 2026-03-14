@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>تسجيل الطلاب — الهيئة الطلابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.reg-layout{display:grid;grid-template-columns:1fr 360px;gap:24px;padding:24px;max-width:1100px;margin:0 auto}
+.reg-card{background:#fff;border:0.5px solid var(--c-border);border-radius:16px;padding:28px}
+.reg-card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.reg-card>p{font-size:13px;color:var(--c-muted);margin-bottom:22px;line-height:1.7}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.step-bar{display:flex;margin-bottom:24px}
+.step{flex:1;text-align:center;padding:10px 6px;font-size:12px;color:var(--c-muted);border-bottom:2px solid var(--c-border);transition:all .2s}
+.step.active{color:var(--c-primary);border-color:var(--c-primary);font-weight:600}
+.step.done{color:var(--c-green);border-color:var(--c-green)}
+.benefits-card{background:#fff;border:0.5px solid var(--c-border);border-radius:16px;padding:22px;margin-bottom:16px}
+.benefit-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid rgba(26,79,160,.06)}
+.benefit-item:last-child{border-bottom:none}
+.benefit-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.benefit-text h4{font-size:13px;font-weight:600;margin-bottom:2px}
+.benefit-text p{font-size:12px;color:var(--c-muted);line-height:1.5}
+.success-screen{display:none;text-align:center;padding:28px 0}
+.success-icon{width:72px;height:72px;background:#E1F5EE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.loading-overlay.show{display:flex}
+.spinner{width:44px;height:44px;border:4px solid var(--c-border);border-top-color:var(--c-primary);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.reg-layout{grid-template-columns:1fr}.benefits-sidebar{display:none}}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">ط</div>الهيئة الطلابية</a>
+  <div class="nav-links">
+    <a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a>
+    <a href="files.html">الملفات</a><a href="vote.html">التصويتات</a>
+    <a href="competitions.html">المسابقات</a><a href="contact.html">تواصل معنا</a>
+  </div>
+  <div class="nav-actions"><button class="btn-login">تسجيل / دخول</button></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>تسجيل الطلاب</span></div>
+  <h1>📝 تسجيل الطلاب</h1>
+  <p>سجّل بياناتك وانضم إلى مجتمع الهيئة الطلابية واستفد من جميع الخدمات</p>
+</div>
+
+<div class="reg-layout">
+  <div class="reg-card">
+    <h2>نموذج تسجيل طالب جديد</h2>
+    <p>يرجى ملء جميع الحقول بدقة. ستُحفظ بياناتك بشكل آمن عبر Google Forms.</p>
+
+    <div class="step-bar">
+      <div class="step active" id="step1-tab">1. البيانات الشخصية</div>
+      <div class="step" id="step2-tab">2. البيانات الأكاديمية</div>
+      <div class="step" id="step3-tab">3. التأكيد والإرسال</div>
+    </div>
+
+    <!-- ===== STEP 1 ===== -->
+    <div id="step1">
+      <div class="form-row">
+        <div class="form-group"><label>الاسم الأول *</label><input type="text" id="fname" placeholder="الاسم الأول"/></div>
+        <div class="form-group"><label>الاسم الأخير *</label><input type="text" id="lname" placeholder="اسم العائلة"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>الجنس</label>
+          <select id="gender"><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>
+        </div>
+        <div class="form-group"><label>تاريخ الميلاد</label><input type="date" id="dob"/></div>
+      </div>
+      <div class="form-group">
+        <label>البريد الإلكتروني *</label>
+        <input type="email" id="email" placeholder="example@university.edu.sy.sy"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>رقم الهاتف * <span style="font-size:11px;color:var(--c-muted)">(سوري)</span></label>
+          <input type="tel" id="phone" placeholder="09xxxxxxxx"/>
+          <div style="font-size:11px;color:var(--c-muted);margin-top:3px">
+            شبكات سوريا: سيريتل (09x) — MTN (09x) — الإتصالات (09x)
+          </div>
+        </div>
+        <div class="form-group">
+          <label>المحافظة</label>
+          <select id="gov">
+            <option value="">اختر المحافظة</option>
+            <option>دمشق</option>
+            <option>ريف دمشق</option>
+            <option>حلب</option>
+            <option>حمص</option>
+            <option>حماة</option>
+            <option>اللاذقية</option>
+            <option>طرطوس</option>
+            <option>إدلب</option>
+            <option>الرقة</option>
+            <option>دير الزور</option>
+            <option>الحسكة</option>
+            <option>القنيطرة</option>
+            <option>السويداء</option>
+            <option>درعا</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goStep(2)">التالي ←</button>
+    </div>
+
+    <!-- ===== STEP 2 ===== -->
+    <div id="step2" style="display:none">
+      <div class="form-row">
+        <div class="form-group">
+          <label>الجامعة</label>
+          <select id="university">
+            <option value="">اختر الجامعة</option>
+            <optgroup label="الجامعات الحكومية">
+              <option>جامعة دمشق</option>
+              <option>جامعة حلب</option>
+              <option>جامعة تشرين (اللاذقية)</option>
+              <option>جامعة البعث (حمص)</option>
+              <option>جامعة الفرات (دير الزور)</option>
+              <option>جامعة الأندلس (طرطوس)</option>
+            </optgroup>
+            <optgroup label="الجامعات الخاصة">
+              <option>جامعة القلمون</option>
+              <option>جامعة الوادي الدولية</option>
+              <option>جامعة اليمامة</option>
+              <option>جامعة سوريا الدولية للعلوم</option>
+              <option>جامعة المنارة</option>
+              <option>جامعة العقيلة</option>
+            </optgroup>
+            <optgroup label="المعاهد والكليات">
+              <option>المعهد التقني العالي</option>
+              <option>كلية تقنية أخرى</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الكلية *</label>
+          <select id="college">
+            <option value="">اختر الكلية</option>
+            <optgroup label="كليات الهندسة">
+              <option>كلية الهندسة المعلوماتية</option>
+              <option>كلية الهندسة المدنية</option>
+              <option>كلية الهندسة الميكانيكية والكهربائية</option>
+              <option>كلية الهندسة المعمارية</option>
+              <option>كلية الهندسة الزراعية</option>
+            </optgroup>
+            <optgroup label="كليات الطب والصحة">
+              <option>كلية الطب البشري</option>
+              <option>كلية طب الأسنان</option>
+              <option>كلية الصيدلة</option>
+              <option>كلية الطب البيطري</option>
+            </optgroup>
+            <optgroup label="كليات العلوم">
+              <option>كلية العلوم</option>
+              <option>كلية الزراعة</option>
+              <option>كلية العلوم التطبيقية</option>
+            </optgroup>
+            <optgroup label="كليات الإنسانيات">
+              <option>كلية الآداب والعلوم الإنسانية</option>
+              <option>كلية الحقوق</option>
+              <option>كلية الاقتصاد</option>
+              <option>كلية التربية</option>
+              <option>كلية الفنون الجميلة</option>
+              <option>كلية السياحة والفندقة</option>
+              <option>كلية الإعلام</option>
+              <option>كلية الشريعة</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>السنة الدراسية *</label>
+          <select id="year">
+            <option value="">اختر</option>
+            <option>السنة الأولى</option>
+            <option>السنة الثانية</option>
+            <option>السنة الثالثة</option>
+            <option>السنة الرابعة</option>
+            <option>السنة الخامسة</option>
+            <option>السنة السادسة</option>
+            <option>دراسات عليا — ماجستير</option>
+            <option>دراسات عليا — دكتوراه</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الرقم الجامعي</label>
+          <input type="text" id="stunum" placeholder="مثال: 2024-12345"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>المعدل التراكمي <span style="font-size:11px;color:var(--c-muted)">(اختياري — من 100)</span></label>
+        <input type="number" id="gpa" placeholder="مثال: 82" min="0" max="100"/>
+      </div>
+      <div class="form-group">
+        <label>اهتماماتك</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="الفعاليات الثقافية"/> الفعاليات الثقافية</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="الأنشطة الرياضية"/> الأنشطة الرياضية</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="البرمجة والتقنية"/> البرمجة والتقنية</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="ريادة الأعمال"/> ريادة الأعمال</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="التطوع والعمل الاجتماعي"/> التطوع والعمل الاجتماعي</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" class="interest" value="الفنون والأدب"/> الفنون والأدب</label>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn-outline" onclick="goStep(1)">← السابق</button>
+        <button class="btn-primary" onclick="goStep(3)">التالي ←</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3 ===== -->
+    <div id="step3" style="display:none">
+      <div style="background:var(--c-light);border-radius:12px;padding:18px;margin-bottom:18px" id="summaryBox"></div>
+      <div class="form-group">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:400;cursor:pointer">
+          <input type="checkbox" id="agreeCheck" style="margin-top:3px;width:auto"/>
+          أوافق على <a href="#" style="color:var(--c-primary)">شروط الاستخدام</a> وحفظ بياناتي في قاعدة بيانات الهيئة الطلابية
+        </label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn-outline" onclick="goStep(2)">← السابق</button>
+        <button class="btn-primary" onclick="submitForm()">✅ إتمام التسجيل</button>
+      </div>
+    </div>
+
+    <!-- ===== SUCCESS ===== -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">🎉</div>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">تم التسجيل بنجاح!</h2>
+      <p style="color:var(--c-muted);font-size:13px;line-height:1.7;max-width:340px;margin:0 auto 20px">
+        أهلاً وسهلاً بك في الهيئة الطلابية!<br/>
+        تم حفظ بياناتك. ستصلك رسالة تأكيد على بريدك الإلكتروني قريباً.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" onclick="location.href='index.html'">العودة للرئيسية</button>
+        <button class="btn-outline" onclick="location.href='events.html'">تصفح الفعاليات</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="benefits-sidebar">
+    <div class="benefits-card">
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px">🌟 مزايا التسجيل</div>
+      <div class="benefit-item"><div class="benefit-icon" style="background:#E6F1FB">📰</div><div class="benefit-text"><h4>متابعة الأخبار</h4><p>احصل على إشعارات فورية لأهم الأخبار</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon" style="background:#EAF3DE">📅</div><div class="benefit-text"><h4>تسجيل في الفعاليات</h4><p>سجّل مشاركتك في الفعاليات بنقرة واحدة</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon" style="background:#FAEEDA">📚</div><div class="benefit-text"><h4>الوصول للملفات</h4><p>حمّل وارفع الملفات الدراسية</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon" style="background:#FAECE7">🎁</div><div class="benefit-text"><h4>نظام النقاط</h4><p>اكسب نقاطاً واستبدلها بجوائز</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon" style="background:#E1F5EE">📊</div><div class="benefit-text"><h4>التصويت والاستطلاعات</h4><p>شارك في صنع القرار</p></div></div>
+    </div>
+    <div style="background:linear-gradient(135deg,#0f2d6b,#1a4fa0);border-radius:14px;padding:20px;color:#fff;text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">🏅</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:6px">ابدأ بـ 20 نقطة مجاناً!</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.6">كل طالب جديد يحصل على 20 نقطة ترحيبية عند إتمام تسجيله</div>
+    </div>
+  </aside>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div style="font-size:14px;color:var(--c-primary);font-weight:600">جاري حفظ بياناتك...</div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col"><h4>الهيئة الطلابية</h4><a href="#">من نحن</a><a href="#">أعضاء الهيئة</a>
+      <div class="social-links"><a class="social-btn">𝕏</a><a class="social-btn">f</a><a class="social-btn">tg</a></div>
+    </div>
+    <div class="footer-col"><h4>روابط سريعة</h4><a href="index.html">الرئيسية</a><a href="news.html">الأخبار</a><a href="events.html">الفعاليات</a></div>
+    <div class="footer-col"><h4>الخدمات</h4><a href="vote.html">التصويتات</a><a href="files.html">الملفات</a><a href="contact.html">تواصل معنا</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 الهيئة الطلابية — سوريا</span></div>
+</footer>
+
+<div class="chat-widget">
+  <div class="chat-popup" id="chatPopup">
+    <div class="chat-popup-title">💬 المساعد الذكي</div>
+    <div class="chat-popup-sub">متاح 24/7</div>
+    <div class="chat-msgs" id="chatMsgs"><div class="msg-bot">مرحباً! كيف يمكنني مساعدتك؟ 😊</div></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="اكتب سؤالك..."/>
+      <button class="chat-send" onclick="sendChat()">إرسال</button>
+    </div>
+  </div>
+  <div class="chat-fab" onclick="toggleChat()"><div class="chat-fab-inner">AI</div></div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// ⚙️ ضع هنا الـ Form ID الخاص بك من Google Forms
+var FORM_ID = 'YOUR_GOOGLE_FORM_ID';
+
+var currentStep = 1;
+
+function goStep(n) {
+  if (n === 2) {
+    var fn = document.getElementById('fname').value.trim();
+    var ln = document.getElementById('lname').value.trim();
+    var em = document.getElementById('email').value.trim();
+    var ph = document.getElementById('phone').value.trim();
+    if (!fn || !ln) { showToast('يرجى إدخال الاسم الكامل', 'success'); return; }
+    if (!em) { showToast('يرجى إدخال البريد الإلكتروني', 'success'); return; }
+    if (!ph) { showToast('يرجى إدخال رقم الهاتف', 'success'); return; }
+  }
+  if (n === 3) {
+    if (!document.getElementById('college').value) { showToast('يرجى اختيار الكلية', 'success'); return; }
+    if (!document.getElementById('year').value) { showToast('يرجى اختيار السنة الدراسية', 'success'); return; }
+    buildSummary();
+  }
+  currentStep = n;
+  [1,2,3].forEach(function(i){
+    document.getElementById('step'+i).style.display = i===n ? 'block' : 'none';
+    document.getElementById('step'+i+'-tab').className = 'step'+(i<n?' done':i===n?' active':'');
+  });
+}
+
+function buildSummary() {
+  var interests = [];
+  document.querySelectorAll('.interest:checked').forEach(function(c){ interests.push(c.value); });
+  var rows = [
+    ['الاسم الكامل',      document.getElementById('fname').value+' '+document.getElementById('lname').value],
+    ['البريد الإلكتروني', document.getElementById('email').value],
+    ['رقم الهاتف',         document.getElementById('phone').value],
+    ['المحافظة',           document.getElementById('gov').value||'—'],
+    ['الجامعة',            document.getElementById('university').value||'—'],
+    ['الكلية',             document.getElementById('college').value],
+    ['السنة الدراسية',    document.getElementById('year').value],
+    ['الرقم الجامعي',     document.getElementById('stunum').value||'—'],
+    ['الاهتمامات',        interests.length ? interests.join('، ') : '—'],
+  ];
+  var html = '<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--c-primary)">مراجعة بياناتك</div>';
+  rows.forEach(function(r){
+    html += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid rgba(26,79,160,.06);font-size:12px">'
+      +'<span style="color:var(--c-muted)">'+r[0]+'</span>'
+      +'<span style="font-weight:500;text-align:left;max-width:55%">'+r[1]+'</span></div>';
+  });
+  document.getElementById('summaryBox').innerHTML = html;
+}
+
+function submitForm() {
+  if (!document.getElementById('agreeCheck').checked) {
+    showToast('يرجى الموافقة على الشروط أولاً', 'success');
+    return;
+  }
+  var interests = [];
+  document.querySelectorAll('.interest:checked').forEach(function(c){ interests.push(c.value); });
+  var data = {
+    fullName:   document.getElementById('fname').value.trim()+' '+document.getElementById('lname').value.trim(),
+    gender:     document.getElementById('gender').value,
+    dob:        document.getElementById('dob').value,
+    email:      document.getElementById('email').value.trim(),
+    phone:      document.getElementById('phone').value.trim(),
+    gov:        document.getElementById('gov').value,
+    university: document.getElementById('university').value,
+    college:    document.getElementById('college').value,
+    year:       document.getElementById('year').value,
+    stunum:     document.getElementById('stunum').value.trim(),
+    gpa:        document.getElementById('gpa').value,
+    interests:  interests.join('، ')
+  };
+  document.getElementById('loadingOverlay').classList.add('show');
+  var formUrl = 'https://docs.google.com/forms/d/'+FORM_ID+'/formResponse';
+  // ⚙️ غيّر أرقام entry بعد إنشاء نموذج Google Forms
+  var fields = {
+    'entry.FULLNAME':   data.fullName,
+    'entry.GENDER':     data.gender,
+    'entry.DOB':        data.dob,
+    'entry.EMAIL':      data.email,
+    'entry.PHONE':      data.phone,
+    'entry.GOV':        data.gov,
+    'entry.UNIVERSITY': data.university,
+    'entry.COLLEGE':    data.college,
+    'entry.YEAR':       data.year,
+    'entry.STUNUM':     data.stunum,
+    'entry.GPA':        data.gpa,
+    'entry.INTERESTS':  data.interests
+  };
+  var iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.name = 'hidden_iframe';
+  document.body.appendChild(iframe);
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = formUrl;
+  form.target = 'hidden_iframe';
+  Object.keys(fields).forEach(function(k){
+    var inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  iframe.onload = function(){
+    document.getElementById('loadingOverlay').classList.remove('show');
+    showSuccess(); form.remove();
+    setTimeout(function(){ iframe.remove(); }, 1000);
+  };
+  setTimeout(function(){
+    document.getElementById('loadingOverlay').classList.remove('show');
+    showSuccess();
+  }, 3000);
+  form.submit();
+}
+
+function showSuccess() {
+  [1,2,3].forEach(function(i){
+    document.getElementById('step'+i).style.display='none';
+    document.getElementById('step'+i+'-tab').className='step done';
+  });
+  document.getElementById('successScreen').style.display='block';
+}
+</script>
+</body>
+</html>
